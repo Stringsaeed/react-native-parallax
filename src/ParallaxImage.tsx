@@ -1,61 +1,61 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import { Animated, Dimensions, StyleSheet, View as RNView } from 'react-native';
+import { useParallax } from './ParallaxContext';
 
-const { useState, useCallback, createRef } = React;
+const { useState, useCallback, useRef } = React;
 const { Image, View } = Animated;
 const { get } = Dimensions;
 
 const { height: WINDOW_HEIGHT } = get('window');
 
 interface IImage {
-  y?: Animated.AnimatedInterpolation;
   factor?: number;
   height?: number;
 }
 
-const ParallaxImage: FC<IImage> = ({ y, factor, height }) => {
-  const [layout, setLayout] = useState<{
-    offset: number;
-    height: number;
-    width: number;
-  }>({
+interface ILayout {
+  offset: number;
+  height: number;
+  width: number;
+}
+
+const ParallaxImage: FC<IImage> = ({ factor, height }) => {
+  const y = useParallax();
+  const viewRef = useRef<RNView>(null);
+  const [layout, setLayout] = useState<ILayout>({
     offset: 0,
     height: 0,
     width: 0,
   });
 
-  const viewRef = createRef<RNView>();
+  const handleLayout = useCallback(({}): void => {
+    viewRef.current?.measure((_, __, width, _height, ___, py) => {
+      setLayout({ offset: py, height: _height, width });
+    });
+  }, []);
 
-  const handleLayout = useCallback(
-    ({ nativeEvent }): void => {
-      console.log(nativeEvent.layout);
-
-      viewRef.current?.measure((_, __, width, _height, ___, py) => {
-        setLayout({ offset: py, height: _height, width });
-      });
-    },
-    [viewRef]
+  const style = useMemo(
+    () => ({
+      transform:
+        y && factor
+          ? [
+              {
+                translateY: y.interpolate({
+                  inputRange: [
+                    layout.offset - layout.height,
+                    layout.offset + WINDOW_HEIGHT + layout.height,
+                  ],
+                  outputRange: [
+                    -(layout.height * factor),
+                    layout.height * factor,
+                  ],
+                }),
+              },
+            ]
+          : undefined,
+    }),
+    [y, layout, factor]
   );
-
-  const style =
-    y && factor
-      ? {
-          transform: [
-            {
-              translateY: y.interpolate({
-                inputRange: [
-                  layout.offset - layout.height,
-                  layout.offset + WINDOW_HEIGHT + layout.height,
-                ],
-                outputRange: [
-                  -(layout.height * factor),
-                  layout.height * factor,
-                ],
-              }),
-            },
-          ],
-        }
-      : {};
 
   return (
     <View

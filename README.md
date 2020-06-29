@@ -34,7 +34,7 @@ MIT
 
 ## TODO
 
-- [ ] Add React Context for ScrollY
+- [x] Add React Context for ScrollY
 - [ ] Benchmark Reanimated and how it'll response
 - [ ] Add Components Props
 - [ ] Add Motivation in README.md

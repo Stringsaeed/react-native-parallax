@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Animated } from 'react-native';
 import type { ScrollViewProps } from 'react-native';
 import ParallaxImage from './ParallaxImage';
+import { ParallaxProvider } from './ParallaxContext';
 
 interface ParallaxScrollViewIProps extends ScrollViewProps {}
 const { useRef } = React;
@@ -33,9 +34,11 @@ const ParallaxScrollView: FC<ParallaxScrollViewIProps> = ({ children }) => {
   ]);
 
   return (
-    <Animated.ScrollView onScroll={onScroll}>
-      {applyPropsToParallaxImages(children, { y: y.current })}
-    </Animated.ScrollView>
+    <ParallaxProvider value={y.current}>
+      <Animated.ScrollView onScroll={onScroll}>
+        {applyPropsToParallaxImages(children, { y: y.current })}
+      </Animated.ScrollView>
+    </ParallaxProvider>
   );
 };
 
