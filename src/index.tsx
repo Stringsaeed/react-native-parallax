@@ -1,5 +1,13 @@
-export default {
-  multiply(a: number, b: number) {
-    return Promise.resolve(a * b);
-  },
+import Image from './ParallaxImage';
+import ScrollView from './ParallaxScrollView';
+
+interface Module {
+  Image: typeof Image;
+  ScrollView: typeof ScrollView;
+}
+
+const Parallax: Module = {
+  Image,
+  ScrollView,
 };
+export default Parallax;
