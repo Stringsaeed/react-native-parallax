@@ -5,17 +5,23 @@ Parallax ScrollView with Parallax Images and Views
 ## Installation
 
 ```sh
-npm install react-native-parallax
+// TODO
 ```
 
 ## Usage
 
 ```js
-import Parallax from "react-native-parallax";
+import Parallax from 'react-native-parallax';
 
 // ...
 
-const result = await Parallax.multiply(3, 7);
+export default () => {
+  return (
+    <Parallax.ScrollView>
+      <Parallax.Image />
+    </Parallax.ScrollView>
+  );
+};
 ```
 
 ## Contributing

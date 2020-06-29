@@ -1,15 +1,19 @@
 import React, { FC } from 'react';
-import { Animated, Dimensions, View as RNView } from 'react-native';
+import { Animated, Dimensions, StyleSheet, View as RNView } from 'react-native';
 
 const { useState, useCallback, createRef } = React;
 const { Image, View } = Animated;
-const { height: WINDOW_HEIGHT } = Dimensions.get('window');
+const { get } = Dimensions;
 
-const ParallaxImage: FC<{
+const { height: WINDOW_HEIGHT } = get('window');
+
+interface IImage {
   y?: Animated.AnimatedInterpolation;
   factor?: number;
   height?: number;
-}> = ({ y, factor, height }) => {
+}
+
+const ParallaxImage: FC<IImage> = ({ y, factor, height }) => {
   const [layout, setLayout] = useState<{
     offset: number;
     height: number;
@@ -26,8 +30,8 @@ const ParallaxImage: FC<{
     ({ nativeEvent }): void => {
       console.log(nativeEvent.layout);
 
-      viewRef.current?.measure((_, __, width, height, ___, py) => {
-        setLayout({ offset: py, height, width });
+      viewRef.current?.measure((_, __, width, _height, ___, py) => {
+        setLayout({ offset: py, height: _height, width });
       });
     },
     [viewRef]
@@ -57,36 +61,39 @@ const ParallaxImage: FC<{
     <View
       ref={viewRef}
       onLayout={handleLayout}
-      style={{
-        overflow: 'hidden',
-        position: 'relative',
-        width: '100%',
-        height,
-        backgroundColor: 'red',
-        marginVertical: 20,
-      }}
+      style={[styles.container, { height }]}
     >
       <Image
         source={{
           uri:
             'https://s31807.pcdn.co/wp-content/uploads/2020/02/Timothe%CC%81e-Chalamet-at-Little-Women-Premiere-in-Paris-scaled.jpg',
         }}
-        style={[
-          style,
-          {
-            flex: 1,
-            width: undefined,
-            height: undefined,
-            alignSelf: 'stretch',
-          },
-        ]}
+        style={[style, styles.image]}
         resizeMode="cover"
       />
     </View>
   );
 };
+
 ParallaxImage.defaultProps = {
   factor: 0.2,
   height: 500,
 };
+
 export default ParallaxImage;
+
+const styles = StyleSheet.create({
+  container: {
+    overflow: 'hidden',
+    position: 'relative',
+    width: '100%',
+    backgroundColor: 'red',
+    marginVertical: 20,
+  },
+  image: {
+    flex: 1,
+    width: undefined,
+    height: undefined,
+    alignSelf: 'stretch',
+  },
+});
