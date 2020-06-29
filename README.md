@@ -31,3 +31,15 @@ See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the 
 ## License
 
 MIT
+
+## TODO
+
+- [ ] Add React Context for ScrollY
+- [ ] Benchmark Reanimated and how it'll response
+- [ ] Add Components Props
+- [ ] Add Motivation in README.md
+- [ ] Add Images in README.md
+- [ ] Add Snack Example
+- [ ] Add Test Cases
+- [ ] Put it in Production
+
