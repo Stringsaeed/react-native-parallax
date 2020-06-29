@@ -1,0 +1,22 @@
+{
+  "name": "react-native-parallax-example",
+  "displayName": "Parallax Example",
+  "expo": {
+    "name": "react-native-parallax-example",
+    "slug": "react-native-parallax-example",
+    "description": "Example app for react-native-parallax",
+    "privacy": "public",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
